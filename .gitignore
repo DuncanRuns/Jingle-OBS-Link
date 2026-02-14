@@ -43,3 +43,5 @@ bin/
 
 # Jingle
 /.idea
+OBS Script/obslua.lua
+*.pyc
