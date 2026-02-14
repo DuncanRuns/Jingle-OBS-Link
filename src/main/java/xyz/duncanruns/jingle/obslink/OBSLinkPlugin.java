@@ -19,7 +19,10 @@ import xyz.duncanruns.jingle.util.FileUtil;
 import xyz.duncanruns.jingle.util.ResourceUtil;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -53,7 +56,7 @@ public class OBSLinkPlugin {
                 onState(s);
         }, 1, EXECUTOR);
         try {
-            ResourceUtil.copyResourceToFile("/jingle-obs-link.lua", Jingle.FOLDER.resolve("jingle-obs-link.lua"));
+            copyResourceToFile("/jingle-obs-link.lua", Jingle.FOLDER.resolve("jingle-obs-link.lua"));
             Jingle.log(Level.INFO, "Regenerated obs link script");
         } catch (IOException e) {
             Jingle.logError("Failed to write Script!", e);
@@ -106,6 +109,25 @@ public class OBSLinkPlugin {
             @SerializedName("is_pause")
             public boolean isPause;
         }
+    }
+
+
+    // Copy of Jingle code but using OBSLinkPlugin.class
+    private static void copyResourceToFile(String resourceName, Path destination) throws IOException {
+        // Answer to https://stackoverflow.com/questions/10308221/how-to-copy-file-inside-jar-to-outside-the-jar
+        InputStream inStream = getResourceAsStream(resourceName);
+        OutputStream outStream = Files.newOutputStream(destination);
+        int readBytes;
+        byte[] buffer = new byte[4096];
+        while ((readBytes = inStream.read(buffer)) > 0) {
+            outStream.write(buffer, 0, readBytes);
+        }
+        inStream.close();
+        outStream.close();
+    }
+
+    private static InputStream getResourceAsStream(String name) {
+        return OBSLinkPlugin.class.getResourceAsStream(name);
     }
 
     private enum State {
