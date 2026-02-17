@@ -16,7 +16,6 @@ import xyz.duncanruns.jingle.obslink.gui.OBSLinkPanel;
 import xyz.duncanruns.jingle.plugin.PluginEvents;
 import xyz.duncanruns.jingle.plugin.PluginManager;
 import xyz.duncanruns.jingle.util.FileUtil;
-import xyz.duncanruns.jingle.util.ResourceUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
